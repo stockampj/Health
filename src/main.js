@@ -2,9 +2,11 @@ import $ from 'jquery';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
-import {} from './project';
+import {SearchRequest, ResponseArray} from './project';
 
 const apiKey = process.env.exports.apiKey;
+const responseArray = new ResponseArray();
+
 
 $(document).ready(function(event){
   let conditionTerm = "query=Headache";
@@ -28,13 +30,18 @@ $(document).ready(function(event){
       request.send();
     });
 
+    let apiResponse;
     promise.then(function(response){
-      let body = JSON.parse(response);
-      console.log(body)
+      let apiResponse = JSON.parse(response);
+      responseArray.object = apiResponse;
+
+
     })
   }
-
   getDoctors(conditionTerm,location);
 
+  $("#logger").click(function(){
+    console.log(responseArray.object)
+  })
 
 });
