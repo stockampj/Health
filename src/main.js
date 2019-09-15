@@ -2,28 +2,28 @@ import $ from 'jquery';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
-import {SearchRequest, ResponseArray, getDoctors, responseArray, logger, timeDelay} from './project';
+import {ResponseArray, getDoctors, responseArray, logger, timeDelay, ipLocation, inputCleaner} from './project';
 
 
 $(document).ready(function(event){
   const apiKey = process.env.exports.apiKey;
   let conditionTerm;
-  // Portland location=45.505,-122.6750,100
-  let location = "&location=45.52345%2C-122.67621%2C100";
-  let userLocation = "&user_location=45.52345%2C-122.67621";
+  //hard code Portland if error in ip retrival
+  let location = "&location=45.52345%2C-122.67621%2C40";
 
-  // gets user's ip address
-  // $.get('http://jsonip.com', function (res) {
-  //     let ip = res.ip;
-  //   });
+  $.get('http://jsonip.com', function (res) {
+      let ip = res.ip;
+      timeDelay(ipLocation(ip), 700);
+    });
 
   function fillPage(){
+    $(".output").text("");
     responseArray.doctors.forEach(function(doctor){
       let available;
       if (doctor.status === true){
-        available = "Accepting new patients!";
+        available = "<h6 class='status available'>Accepting new patients!</h6>";
       } else {
-        available = "Not accepting new patients.";
+        available = "<h6 class='status unavailable'> Not accepting new patients.</h6>";
       }
       $(".output").append(`
         <div class ="doc-profile">
@@ -33,7 +33,7 @@ $(document).ready(function(event){
           <h6>${doctor.specialty}</h6>
           <h6 class="address">${doctor.address}</h6>
           <h6 class="phone">${doctor.phone}</h6>
-          <h6 class="status">${available}</h6>
+          ${available}
         </div>
         `)
     });
@@ -42,17 +42,13 @@ $(document).ready(function(event){
 
   $("#search").click(function(){
     responseArray.doctors = [];
-    conditionTerm = "query="+$("#conditionSearch").val();
-    getDoctors(conditionTerm,location,userLocation,apiKey);
-    timeDelay(logger, 2000);
-    timeDelay(fillPage, 2500);
-
+    location = responseArray.location;
+    conditionTerm = "&query="+inputCleaner($("#conditionSearch").val());
+    getDoctors(conditionTerm,location,apiKey);
+    timeDelay(logger, 1500);
+    timeDelay(fillPage, 1600);
 
   });
 
-
-
-
-
-
+  inputCleaner("joel stockamp likes pizza")
 });
