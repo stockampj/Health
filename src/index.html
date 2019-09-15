@@ -6,15 +6,23 @@
 </head>
 <body>
 <div class="container">
-  <div class="input">
-    <label for="condition">Search for a doctor by a condition</label>
-    <input type="text" name="condition" value="" id="conditionSearch">
-    <label for="condition">Search for a specific doctor </label>
-    <input type="text" name="condition" value="" id="doctorSearch">
-    <button type="button" name="button" id="search">Search</button>
+  <div class="row">
+    <div class="input">
+      <label for="condition">Search for a doctor by a condition</label>
+      <input type="text" name="condition" value="" id="conditionSearch">
+      <br>
+      <label for="condition">Search for a specific doctor </label>
+      <input type="text" name="condition" value="" id="doctorSearch">
+      <br>
+      <button class="btn btn-light" type="button" name="button" id="search">Search</button>
+    </div>
   </div>
-  <div class="output"></div>
-  <div class="errors"></div>
+  <div class="row">
+    <div class="output"></div>
+  </div>
+  <div class="row">
+    <div class="errors"></div>
+  </div>
 </div>
 </body>
 </html>
